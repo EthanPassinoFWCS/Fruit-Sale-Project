@@ -1,6 +1,10 @@
+import os
+
 import pyodbc
 # pip install pyodbc to get this.
 import sys
+
+
 class Data:
     def __init__(self, filename):
         self.filename = filename
@@ -13,6 +17,7 @@ class Data:
             conn = pyodbc.connect("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};" + " DBQ=data/" + self.filename + ";")
         except pyodbc.InterfaceError:
             print("An error has occured that has caused us not to be able to access the database file to get the data. This more than likely means that you do not have the correct stuff installed properly to access these files. Your python bit version and the bit version of the Microsoft Access Driver must be the same.")
+            # Checks if the system is 64 bit or 32 bit.
             is64bit = sys.maxsize > 2**32
             if is64bit:
                 print("The python version you were running was 64 bit. Download and install the 'accessdatabaseengine_X64.exe' file from here: https://www.microsoft.com/en-us/download/details.aspx?id=54920")
@@ -32,7 +37,8 @@ class Data:
                 fixed_entry[c] = entry[self.columns.index(c)]
             data.append(fixed_entry)
         self.data = data
-
+        cursor.close()
+        conn.close()
 
     def getFruitData(self, fruit):
         '''This goes through and gets all data about a fruit, its name and number of buys'''
@@ -42,6 +48,9 @@ class Data:
         '''This will return a list with the fruits ordered from most bought from to least bought'''
 
 
-d = Data("2016AnthisFruit.accdb", "2017AnthisFruit.accdb", "2018AnthisFruit.accdb", "2019AnthisFruit.accdb", "2020AnthisFruit1.accdb")
-
-print(d.data)
+data = []
+for dbfile in os.listdir("data/"):
+    if dbfile.split(".")[-1] == "accdb":
+        data.append(Data(dbfile))
+for obj_data in data:
+    print(obj_data.data)
