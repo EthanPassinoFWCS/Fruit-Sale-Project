@@ -42,10 +42,13 @@ class Data:
 
     def getFruitData(self, fruit):
         '''This goes through and gets all data about a fruit, its name and number of buys'''
-        '''self.data will contain the data'''
+        '''self.data will contain the data and it is a list of dictionaries'''
+        '''each key is a fruit/basket except "ID", "AmountOwed", and "Sheet".'''
 
     def orderFruits(self):
         '''This will return a list with the fruits ordered from most bought from to least bought'''
+        '''self.data will contain the data and it is a list of dictionaries'''
+        '''each key is a fruit/basket except "ID", "AmountOwed", and "Sheet".'''
 
 
 data = []
