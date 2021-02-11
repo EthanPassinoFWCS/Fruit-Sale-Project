@@ -8,8 +8,8 @@ class Data:
 
   def getdata(self):
       '''Gets a big list of all the data in the accessdb file. This just might be in the init later on. This will ignore student names.'''
-      '''Need https://www.microsoft.com/en-us/download/details.aspx?id=50420 driver to run'''
-      conn = pyodbc.connect("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};" + " DBQ=data/" + self.filename)
+      '''Needhttps://www.microsoft.com/en-us/download/details.aspx?id=54920 to run. Make sure it is the same bit version as python. If it doesn't say which it is, it is 32 bit.'''
+      conn = pyodbc.connect("DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};" + " DBQ=data/" + self.filename + ";")
       cursor = conn.cursor()
       cursor.execute("SELECT * FROM FruitSale")
       data = []
@@ -23,6 +23,8 @@ class Data:
               fixed_entry[c] = entry[self.columns.index(c)]
           data.append(fixed_entry)
       self.data = data
+
+
       
 
   def getFruitData(self, fruit):
