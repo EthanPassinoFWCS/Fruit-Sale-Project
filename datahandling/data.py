@@ -6,8 +6,9 @@ import sys
 
 
 class Data:
-    def __init__(self, filename):
+    def __init__(self, filename, year):
         self.filename = filename
+        self.year = year
         self.getdata()
 
     def getdata(self):
@@ -42,18 +43,24 @@ class Data:
 
     def getFruitData(self, fruit):
         '''This goes through and gets all data about a fruit, its name and number of buys'''
-        '''self.data will contain the data and it is a list of dictionaries'''
-        '''each key is a fruit/basket except "ID", "AmountOwed", and "Sheet".'''
+        '''self.data will contain the data'''
 
     def orderFruits(self):
         '''This will return a list with the fruits ordered from most bought from to least bought'''
-        '''self.data will contain the data and it is a list of dictionaries'''
-        '''each key is a fruit/basket except "ID", "AmountOwed", and "Sheet".'''
 
 
 data = []
 for dbfile in os.listdir("data/"):
     if dbfile.split(".")[-1] == "accdb":
-        data.append(Data(dbfile))
+        try:
+            year_int = int(dbfile[0:4])
+        except ValueError:
+            print(f"The first 4 characters of the file name must be the year in numbers. Please fix the file {dbfile} to support this format.")
+            continue
+        data.append(Data(dbfile, year_int))
+    else:
+        print(f"The file {dbfile} is not a '.accdb' file. It must be a '.accdb' file. Skipped this file.")
+
 for obj_data in data:
     print(obj_data.data)
+
