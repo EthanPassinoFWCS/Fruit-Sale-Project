@@ -10,6 +10,10 @@ class Data:
         self.filename = filename
         self.year = year
         self.getdata()
+        '''
+        self.data is a list that contains each row of the table as a dictionary.
+        self.columns is a list that contains each key in each dictionary in the self.data list.
+        '''
 
     def getdata(self):
         '''Gets a big list of all the data in the accessdb file. This just might be in the init later on. This will ignore student names.'''
@@ -47,7 +51,7 @@ class Data:
         if len(self.data) == 0:
             print("This object contains no data.")
             return -2
-        if not fruit in self.data[0] or fruit == "Sheet" or fruit == "AmountOwed" or fruit == "ID":
+        if fruit not in self.columns or fruit == "Sheet" or fruit == "AmountOwed" or fruit == "ID":
             print("Error: This fruit/basket is not in the data.")
             return -1
         total = 0
@@ -57,6 +61,7 @@ class Data:
 
     def orderFruits(self):
         '''This will return a list with the fruits ordered from most bought from to least bought'''
+
 
 
 data = []
