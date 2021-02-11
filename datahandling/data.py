@@ -42,5 +42,6 @@ class Data:
         '''This will return a list with the fruits ordered from most bought from to least bought'''
 
 
-d = Data("2020AnthisFruit1.accdb")
+d = Data("2016AnthisFruit.accdb", "2017AnthisFruit.accdb", "2018AnthisFruit.accdb", "2019AnthisFruit.accdb", "2020AnthisFruit1.accdb")
+
 print(d.data)
