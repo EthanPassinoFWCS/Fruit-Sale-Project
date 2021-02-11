@@ -44,6 +44,16 @@ class Data:
     def getFruitData(self, fruit):
         '''This goes through and gets all data about a fruit, its name and number of buys'''
         '''self.data will contain the data'''
+        if len(self.data) == 0:
+            print("This object contains no data.")
+            return -2
+        if not fruit in self.data[0] or fruit == "Sheet" or fruit == "AmountOwed" or fruit == "ID":
+            print("Error: This fruit/basket is not in the data.")
+            return -1
+        total = 0
+        for data_dict in self.data:
+            total += data_dict[fruit]
+        return total
 
     def orderFruits(self):
         '''This will return a list with the fruits ordered from most bought from to least bought'''
