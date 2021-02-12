@@ -1,1 +1,14 @@
+data = []
+for dbfile in os.listdir("data/"):
+    if dbfile.split(".")[-1] == "accdb":
+        try:
+            year_int = int(dbfile[0:4])
+        except ValueError:
+            print(f"The first 4 characters of the file name must be the year in numbers. Please fix the file {dbfile} to support this format.")
+            continue
+        data.append(Data(dbfile, year_int))
+    else:
+        print(f"The file {dbfile} is not a '.accdb' file. It must be a '.accdb' file. Skipped this file.")
 
+for obj_data in data:
+    print(obj_data.data)
