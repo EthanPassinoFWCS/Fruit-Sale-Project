@@ -51,12 +51,17 @@ class Data:
         if len(self.data) == 0:
             print("This object contains no data.")
             return -2
-        if fruit not in self.columns or fruit == "Sheet" or fruit == "AmountOwed" or fruit == "ID":
+        if fruit not in self.columns or fruit == "Sheet" or fruit == "AmountOwed" or fruit == "ID" or fruit == "teacherCode" or fruit == "StudentLastName" or fruit == "StudentFirstName":
             print("Error: This fruit/basket is not in the data.")
             return -1
         total = 0
         for data_dict in self.data:
-            total += data_dict[fruit]
+            if data_dict[fruit] is None:
+                continue
+            try:
+                total += int(data_dict[fruit])
+            except ValueError:
+                continue
         return total
 
     def orderFruits(self):
@@ -66,11 +71,11 @@ class Data:
         '''This returns a dictionary that contains each fruits total.'''
         dict = {}
         for fruit in self.columns:
-            if fruit == "Sheet" or fruit == "AmountOwed" or fruit == "ID":
+            if fruit == "Sheet" or fruit == "AmountOwed" or fruit == "ID" or fruit == "teacherCode" or fruit == "StudentLastName" or fruit == "StudentFirstName":
                 continue
             dict[fruit] = self.getFruitData(fruit)
         return dict
-    
+
 data = []
 for dbfile in os.listdir("data/"):
     if dbfile.split(".")[-1] == "accdb":
@@ -82,7 +87,3 @@ for dbfile in os.listdir("data/"):
         data.append(Data(dbfile, year_int))
     else:
         print(f"The file {dbfile} is not a '.accdb' file. It must be a '.accdb' file. Skipped this file.")
-
-for obj_data in data:
-    print(obj_data.data)
-    obj_data.getFruitData("fruit")
