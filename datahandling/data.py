@@ -62,8 +62,15 @@ class Data:
     def orderFruits(self):
         '''This will return a list with the fruits ordered from most bought from to least bought'''
 
-
-
+    def getTotalDictionary(self):
+        '''This returns a dictionary that contains each fruits total.'''
+        dict = {}
+        for fruit in self.columns:
+            if fruit == "Sheet" or fruit == "AmountOwed" or fruit == "ID":
+                continue
+            dict[fruit] = self.getFruitData(fruit)
+        return dict
+    
 data = []
 for dbfile in os.listdir("data/"):
     if dbfile.split(".")[-1] == "accdb":
@@ -78,4 +85,4 @@ for dbfile in os.listdir("data/"):
 
 for obj_data in data:
     print(obj_data.data)
-
+    obj_data.getFruitData("fruit")
