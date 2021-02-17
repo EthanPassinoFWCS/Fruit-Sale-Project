@@ -47,6 +47,8 @@ class Data:
         with open(f"prices/{self.year}.json") as pr:
             try:
                 self.prices = json.load(pr)
+                if len(self.prices) == 0:
+                    self.prices = {"ERR": None}
             except FileNotFoundError:
                 print(f"There was no price for the year {self.year}")
                 self.prices = {"ERR": None}
