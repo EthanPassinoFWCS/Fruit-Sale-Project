@@ -1,5 +1,5 @@
 import os
-
+import json
 import pyodbc
 # pip install pyodbc to get this.
 import sys
@@ -37,13 +37,19 @@ class Data:
             entry = [r for r in row]
             fixed_entry = {}
             for c in self.columns:
-                if c == "teacherCode" or c == "StudentLastName" or c == "StudentFirstName":
+                if c == "teacherCode" or c == "StudentLastName" or c == "StudentFirstName" or c == "SmallBaskets" or c == "LargeBaskets":
                     continue
                 fixed_entry[c] = entry[self.columns.index(c)]
             data.append(fixed_entry)
         self.data = data
         cursor.close()
         conn.close()
+        with open(f"prices/{self.year}.json") as pr:
+            try:
+                self.prices = json.load(pr)
+            except FileNotFoundError:
+                print(f"There was no price for the year {self.year}")
+                self.prices = {"ERR": None}
 
     def getFruitData(self, fruit):
         '''This goes through and gets all data about a fruit, its name and number of buys'''
@@ -51,7 +57,7 @@ class Data:
         if len(self.data) == 0:
             print("This object contains no data.")
             return -2
-        if fruit not in self.columns or fruit == "Sheet" or fruit == "AmountOwed" or fruit == "ID" or fruit == "teacherCode" or fruit == "StudentLastName" or fruit == "StudentFirstName":
+        if fruit not in self.columns or fruit == "Sheet" or fruit == "AmountOwed" or fruit == "ID" or fruit == "teacherCode" or fruit == "StudentLastName" or fruit == "StudentFirstName" or fruit == "SmallBaskets" or fruit == "LargeBaskets":
             print("Error: This fruit/basket is not in the data.")
             return -1
         total = 0
@@ -64,9 +70,6 @@ class Data:
                 continue
         return total
 
-    def orderFruits(self):
-        '''This will return a list with the fruits ordered from most bought from to least bought'''
-
     def getTotalDictionary(self):
         '''This returns a dictionary that contains each fruits total.'''
         dict = {}
@@ -75,6 +78,25 @@ class Data:
                 continue
             dict[fruit] = self.getFruitData(fruit)
         return dict
+
+    def getFruitCost(self, fruit):
+        '''Gets the cost of the fruit specified (if it can)'''
+        if "ERR" in list(self.prices.keys()):
+            return 0
+        for key in list(self.prices.keys()):
+            if key.lower() == fruit.lower():
+                return self.prices[key]
+        return 0
+
+    def getTotalCosts(self):
+        """This returns a dictionary. Each key is a fruit that contains a value of the total cost gotten from that fruit from this year."""
+        totals = {}
+        fruitsGotten = self.getTotalDictionary()
+        for col in self.columns:
+            if col == "Sheet" or col == "AmountOwed" or col == "ID" or col == "teacherCode" or col == "StudentLastName" or col == "StudentFirstName":
+                continue
+            totals[col] = self.getFruitCost(col) * fruitsGotten[col]
+        return totals
 
 data = []
 for dbfile in os.listdir("data/"):
@@ -87,3 +109,9 @@ for dbfile in os.listdir("data/"):
         data.append(Data(dbfile, year_int))
     else:
         print(f"The file {dbfile} is not a '.accdb' file. It must be a '.accdb' file. Skipped this file.")
+
+
+#for d in data:
+    #if d.year == 2019:
+        #continue
+    #print(d.getTotalCosts())
