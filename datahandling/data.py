@@ -76,7 +76,7 @@ class Data:
         '''This returns a dictionary that contains each fruits total.'''
         dict = {}
         for fruit in self.columns:
-            if fruit == "Sheet" or fruit == "AmountOwed" or fruit == "ID" or fruit == "teacherCode" or fruit == "StudentLastName" or fruit == "StudentFirstName":
+            if fruit == "Sheet" or fruit == "AmountOwed" or fruit == "ID" or fruit == "teacherCode" or fruit == "StudentLastName" or fruit == "StudentFirstName" or fruit == "SmallBaskets" or fruit == "LargeBaskets":
                 continue
             dict[fruit] = self.getFruitData(fruit)
         return dict
@@ -95,7 +95,7 @@ class Data:
         totals = {}
         fruitsGotten = self.getTotalDictionary()
         for col in self.columns:
-            if col == "Sheet" or col == "AmountOwed" or col == "ID" or col == "teacherCode" or col == "StudentLastName" or col == "StudentFirstName":
+            if col == "Sheet" or col == "AmountOwed" or col == "ID" or col == "teacherCode" or col == "StudentLastName" or col == "StudentFirstName" or col == "SmallBaskets" or col == "LargeBaskets":
                 continue
             totals[col] = self.getFruitCost(col) * fruitsGotten[col]
         return totals
@@ -113,7 +113,7 @@ for dbfile in os.listdir("data/"):
         print(f"The file {dbfile} is not a '.accdb' file. It must be a '.accdb' file. Skipped this file.")
 
 
-#for d in data:
-    #if d.year == 2019:
-        #continue
-    #print(d.getTotalCosts())
+for d in data:
+    if d.year == 2019:
+        continue
+    print(d.getTotalCosts())
