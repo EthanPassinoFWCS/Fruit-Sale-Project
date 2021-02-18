@@ -111,9 +111,3 @@ for dbfile in os.listdir("data/"):
         data.append(Data(dbfile, year_int))
     else:
         print(f"The file {dbfile} is not a '.accdb' file. It must be a '.accdb' file. Skipped this file.")
-
-
-for d in data:
-    if d.year == 2019:
-        continue
-    print(d.getTotalCosts())
